@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Teams – Project VRL</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .team-toggle {
+      width: 100%;
+      background: #1e1e1e;
+      color: white;
+      border: 1px solid var(--purple);
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      cursor: pointer;
+      text-align: left;
+      font-size: 1.1rem;
+    }
+
+    .team-content {
+      display: none;
+      padding: 1rem;
+      background-color: #121212;
+      border: 1px solid var(--purple);
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+    }
+
+    .team-content a {
+      color: var(--purple);
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .team-content a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>All Teams</h1>
+    <nav>
+      <a href="../homepage.html">Home</a>
+      <a href="../schedules/schedule.html">Schedule</a>
+      <a href="#">Stats</a>
+      <a href="#">About</a>
+    </nav>
+  </header>
+
+  <main class="content-grid">
+    <section class="card" style="flex: 1 1 100%;">
+      <h2>Click a team to view more:</h2>
+
+      <!-- Team blocks -->
+      <button class="team-toggle">Team Alpha</button>
+      <div class="team-content">
+        <p>Team Alpha is preparing for the upcoming season.</p>
+        <a href="team1.html">Visit Team Page</a>
+      </div>
+
+      <button class="team-toggle">Team Bravo</button>
+      <div class="team-content">
+        <p>Team Bravo is currently finalizing their roster.</p>
+        <a href="team2.html">Visit Team Page</a>
+      </div>
+
+      <!-- Add more team buttons here -->
+      <!-- Copy-paste the button + div block and change the content -->
+
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Project VRL</p>
+  </footer>
+
+  <script>
+    // Simple collapsible toggle
+    const toggles = document.querySelectorAll('.team-toggle');
+    toggles.forEach(button => {
+      button.addEventListener('click', () => {
+        const content = button.nextElementSibling;
+        content.style.display = content.style.display === 'block' ? 'none' : 'block';
+      });
+    });
+  </script>
+</body>
+</html>
