@@ -5,6 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Teams – Project VRL</title>
   <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .team-toggle {
+      width: 100%;
+      background: #1e1e1e;
+      color: white;
+      border: 1px solid var(--purple);
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      cursor: pointer;
+      text-align: left;
+      font-size: 1.1rem;
+    }
+
+    .team-content {
+      display: none;
+      padding: 1rem;
+      background-color: #121212;
+      border: 1px solid var(--purple);
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+    }
+
+    .team-content a {
+      color: var(--purple);
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .team-content a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -20,27 +53,107 @@
   <main class="content-grid">
     <section class="card" style="flex: 1 1 100%;">
       <h2>Click a team to view more:</h2>
-      <div class="team-grid">
-        <!-- Example team blocks -->
-        <div>
-          <button class="team-toggle">Team AC Malicia FC</button>
-          <div class="team-content">
-            <p>Team AC Malicia FC is preparing for the upcoming season.</p>
-            <a href="ac_malicia_fc.html">Visit Team Page</a>
-          </div>
-        </div>
 
-        <div>
-          <button class="team-toggle">Team Ajajax FC</button>
-          <div class="team-content">
-            <p>Team Ajajax FC is preparing for the upcoming season.</p>
-            <a href="ajajax_fc.html">Visit Team Page</a>
-          </div>
-        </div>
-
-        <!-- Repeat the above pattern for all your teams -->
-        <!-- ... -->
+      <!-- Team blocks -->
+      <button class="team-toggle">Team AC Malicia FC</button>
+      <div class="team-content">
+        <p>Team x is preparing for the upcoming season.</p>
+        <a href="ac_malicia_fc.html">Visit Team Page</a>
       </div>
+      
+      <button class="team-toggle">Team Ajajax FC</button>
+      <div class="team-content">
+        <p>Team x is preparing for the upcoming season.</p>
+        <a href="ajajax_fc.html">Visit Team Page</a>
+      </div>
+
+      <button class="team-toggle">Team Ars FC</button>
+      <div class="team-content">
+        <p>Team x is preparing for the upcoming season.</p>
+        <a href="ars_fc.html">Visit Team Page</a>
+      </div>
+
+      <button class="team-toggle">Team Bastard Munchen FC</button>
+      <div class="team-content">
+        <p>Team x is preparing for the upcoming season.</p>
+        <a href="bastard_munchen_fc.html">Visit Team Page</a>
+      </div>
+
+      <button class="team-toggle">Team Berserk Dortmund FC</button>
+      <div class="team-content">
+        <p>Team x is preparing for the upcoming season.</p>
+        <a href="beserk_dortmund_fc.html">Visit Team Page</a>
+      </div>
+
+      <button class="team-toggle">Team FC Barcha</button>
+      <div class="team-content">
+        <p>Team x is preparing for the upcoming season.</p>
+        <a href="fc_barcha.html">Visit Team Page</a>
+      </div>
+
+      <button class="team-toggle">Team FC Portimon</button>
+      <div class="team-content">
+        <p>Team x is preparing for the upcoming season.</p>
+        <a href="fc_portimon.html">Visit Team Page</a>
+      </div>
+
+      <button class="team-toggle">Team Inter Malicia FC</button>
+      <div class="team-content">
+        <p>Team x is preparing for the upcoming season.</p>
+        <a href="inter_malicia_fc.html">Visit Team Page</a>
+      </div>
+
+      <button class="team-toggle">Team Kawasaki Frontale FC</button>
+      <div class="team-content">
+        <p>Team x is preparing for the upcoming season.</p>
+        <a href="kawasaki_frontale_fc.html">Visit Team Page</a>
+      </div>
+
+      <button class="team-toggle">Team Manshine City FC</button>
+      <div class="team-content">
+        <p>Team x is preparing for the upcoming season.</p>
+        <a href="manshine_city_fc.html">Visit Team Page</a>
+      </div>
+
+      <button class="team-toggle">Team Manshine United FC</button>
+      <div class="team-content">
+        <p>Team x is preparing for the upcoming season.</p>
+        <a href="manshine_united_fc.html">Visit Team Page</a>
+      </div>
+
+      <button class="team-toggle">Team Marseille FC</button>
+      <div class="team-content">
+        <p>Team x is preparing for the upcoming season.</p>
+        <a href="marseille_fc.html">Visit Team Page</a>
+      </div>
+
+      <button class="team-toggle">Team Paris X Gen FC</button>
+      <div class="team-content">
+        <p>Team x is preparing for the upcoming season.</p>
+        <a href="paris_x_gen_fc.html">Visit Team Page</a>
+      </div>
+
+      <button class="team-toggle">Team Royal Madrid FC</button>
+      <div class="team-content">
+        <p>Team x is preparing for the upcoming season.</p>
+        <a href="royal_madrid_fc.html">Visit Team Page</a>
+      </div>
+
+      <button class="team-toggle">Team RPB</button>
+      <div class="team-content">
+        <p>Team x is preparing for the upcoming season.</p>
+        <a href="rpb.html">Visit Team Page</a>
+      </div>
+
+      <button class="team-toggle">Team Ubers FC</button>
+      <div class="team-content">
+        <p>Team x is preparing for the upcoming season.</p>
+        <a href="ubers_fc.html">Visit Team Page</a>
+      </div>
+
+      <!-- Add more team buttons here -->
+      <!-- Copy-paste the button + div block and change the content -->
+
     </section>
   </main>
 
@@ -49,6 +162,7 @@
   </footer>
 
   <script>
+    // Simple collapsible toggle
     const toggles = document.querySelectorAll('.team-toggle');
     toggles.forEach(button => {
       button.addEventListener('click', () => {
