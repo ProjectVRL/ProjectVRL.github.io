@@ -136,3 +136,28 @@ footer a:hover {
 .team-content a:hover {
   text-decoration: underline;
 }
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.team-link {
+  display: block;
+  padding: 1rem;
+  background-color: #1e1e1e;
+  border: 1px solid var(--purple);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--highlight);
+  font-weight: bold;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.team-link:hover {
+  background-color: var(--highlight);
+  color: var(--dark);
+}
+
