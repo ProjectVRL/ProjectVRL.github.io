@@ -3,41 +3,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Project VRL – League Hub</title>
+  <title>Project VRL – Home</title>
   <link rel="stylesheet" href="/css/style.css" />
-  <link rel="icon" href="/logos/favicon.ico" type="image/x-icon">
 </head>
 <body>
-  <!-- Header injected by main.js -->
+  <header>
+    <h1>Project VRL</h1>
+    <nav>
+      <a href="/index.html">Home</a>
+      <a href="/schedule/index.html">Schedule</a>
+      <a href="/stats/index.html">Stats</a>
+      <a href="/streams/index.html">Streams</a>
+      <a href="/sponsors/index.html">Sponsors</a>
+      <a href="/about/index.html">About</a>
+    </nav>
+  </header>
 
   <main class="content-grid">
-    <section class="card">
-      <h2>Teams</h2>
-      <p><a href="/teams/index.html">View All Teams</a></p>
-    </section>
-
+    <!-- News -->
     <section class="card">
       <h2>Latest News</h2>
-      <p>Welcome to Project VRL – the central hub for all things league related.</p>
+      <p>
+        Welcome to <strong>Project VRL</strong> – your central hub for everything league-related.
+        Stay tuned for weekly recaps, big trades, and the latest team roster changes.
+      </p>
+      <p><a class="btn-link" href="/news/index.html">See Full News</a></p>
     </section>
 
+    <!-- League Stats -->
     <section class="card">
       <h2>League Stats</h2>
-      <p>Season standings, player stats, and team performance will appear here.</p>
+      <p>
+        Dive into the standings, team and player stats, and performance breakdowns.
+        Updated live during each match day!
+      </p>
+      <p><a class="btn-link" href="/stats/index.html">Explore Stats</a></p>
     </section>
 
+    <!-- Streams -->
     <section class="card">
       <h2>Live Streams</h2>
-      <p>Catch all games live with commentary right here.</p>
+      <p>
+        Catch all the action live! Matches are streamed with commentary and replay support.
+        You won’t miss a beat.
+      </p>
+      <p><a class="btn-link" href="/streams/index.html">Watch Live</a></p>
     </section>
 
+    <!-- Sponsors -->
     <section class="card">
       <h2>Sponsors</h2>
-      <p>Thanks to our amazing sponsors for supporting the league!</p>
+      <p>
+        Shoutout to our sponsors for supporting Project VRL! Check out the amazing brands helping us grow.
+      </p>
+      <p><a class="btn-link" href="/sponsors/index.html">Meet Our Sponsors</a></p>
     </section>
   </main>
 
-  <!-- Footer injected by main.js -->
   <script src="/js/main.js"></script>
 </body>
 </html>
