@@ -7,33 +7,31 @@
   <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
-  <!-- Header injected by main.js -->
+  <!-- Header injected by JS -->
 
   <main class="content-grid">
-    <section class="card">
-      <h2>Click a team to view more:</h2>
+    <section class="card" style="width: 100%; max-width: 1200px;">
+      <h2 style="text-align: center;">Click a team to view more:</h2>
       <div class="team-grid">
-        <a class="team-link" href="/teams/ac_malicia_fc.html">Team AC Malicia FC</a>
-        <a class="team-link" href="/teams/ajajax_fc.html">Team Ajajax FC</a>
-        <a class="team-link" href="/teams/ars_fc.html">Team Ars FC</a>
-        <a class="team-link" href="/teams/bastard_munchen_fc.html">Team Bastard Munchen FC</a>
-        <a class="team-link" href="/teams/beserk_dortmund_fc.html">Team Beserk Dortmund FC</a>
-        <a class="team-link" href="/teams/fc_barcha.html">Team FC Barcha</a>
-        <a class="team-link" href="/teams/fc_portimon.html">Team FC Portimon</a>
-        <a class="team-link" href="/teams/inter_malicia_fc.html">Team Inter Malicia FC</a>
-        <a class="team-link" href="/teams/kawasaki_frontale_fc.html">Team Kawasaki Frontale FC</a>
-        <a class="team-link" href="/teams/manshine_city_fc.html">Team Manshine City FC</a>
-        <a class="team-link" href="/teams/manshine_united_fc.html">Team Manshine United FC</a>
-        <a class="team-link" href="/teams/marseille_fc.html">Team Marseille FC</a>
-        <a class="team-link" href="/teams/paris_x_gen_fc.html">Team Paris X Gen FC</a>
-        <a class="team-link" href="/teams/royal_madrid_fc.html">Team Royal Madrid FC</a>
-        <a class="team-link" href="/teams/rpb.html">Team RPB</a>
-        <a class="team-link" href="/teams/ubers_fc.html">Team Ubers FC</a>
+        <!-- Example team card -->
+        <div class="team-card">
+          <div class="team-card-inner">
+            <div class="team-card-front">
+              <img src="/logos/ac_malicia.png" alt="AC Malicia FC Logo" class="team-logo" />
+              <h3>AC Malicia FC</h3>
+            </div>
+            <div class="team-card-back">
+              <a href="/teams/ac_malicia_fc.html">View Team</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Duplicate the above block for each team, change logo/team name/link -->
       </div>
     </section>
   </main>
 
-  <!-- Footer injected by main.js -->
+  <!-- Footer injected by JS -->
   <script src="/js/main.js"></script>
 </body>
 </html>
