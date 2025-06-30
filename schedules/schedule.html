@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Schedule – Project VRL</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <!-- header loaded by JS -->
+  <main class="content-grid">
+    <section class="card">
+      <h2>Match Schedule</h2>
+      <div id="schedule-container">
+        <p>Loading schedule...</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- footer loaded by JS -->
+  <script src="/js/main.js"></script>
+  <script>
+    // Example inline JS to show placeholder logic (ideally move to main.js)
+    fetch('/data/schedule.json')
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('schedule-container');
+        container.innerHTML = '';
+        data.forEach(match => {
+          const div = document.createElement('div');
+          div.innerHTML = `<strong>${match.date}</strong>: ${match.team1} vs ${match.team2}`;
+          container.appendChild(div);
+        });
+      })
+      .catch(() => {
+        document.getElementById('schedule-container').innerHTML = 'Failed to load schedule.';
+      });
+  </script>
+</body>
+</html>
