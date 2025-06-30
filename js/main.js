@@ -1,4 +1,4 @@
-// main.js
+// js/main.js
 
 // Load header
 fetch('/components/header.html')
