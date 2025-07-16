@@ -205,3 +205,10 @@ footer a:hover {
   color: var(--dark);
 }
 
+.center-logo {
+  display: block;
+  margin: 0 auto;
+  width: 120px;
+  height: auto;
+}
+
