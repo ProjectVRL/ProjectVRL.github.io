@@ -1,37 +1,46 @@
 // js/main.js
-(function () {
-  // Prefer explicit override if you ever want it:
-  // <script src="js/main.js" data-base="/" defer></script>
-  const scriptEl =
+(() => {
+  // Determine BASE from this script's URL (works for root or /repo/ and subpages).
+  const script =
     document.currentScript ||
     Array.from(document.scripts).find(s => s.src && s.src.endsWith('/js/main.js'));
 
-  let BASE = scriptEl?.dataset?.base || '';
+  let BASE = script?.dataset?.base || '';
   if (!BASE) {
-    const u = new URL(scriptEl.src, location.origin);
-    // e.g. /repo/js/main.js  -> /repo/
-    //      /js/main.js       -> /
-    BASE = u.pathname.replace(/js\/main\.js(?:\?.*)?$/, '');
-    if (!BASE.endsWith('/')) BASE += '/';
+    try {
+      const u = new URL(script.src, location.origin);
+      BASE = u.pathname.replace(/js\/main\.js(?:\?.*)?$/, '');
+      if (!BASE.endsWith('/')) BASE += '/';
+    } catch {
+      BASE = '/';
+    }
   }
 
-  const withBase = (p) => BASE + p.replace(/^\//, '');
+  const withBase = (p) => BASE + (p || '').replace(/^\//, '');
 
-  Promise.all([
-    fetch(withBase('components/header.html')).then(r => r.ok ? r.text() : Promise.reject(r)),
-    fetch(withBase('components/footer.html')).then(r => r.ok ? r.text() : Promise.reject(r)),
-  ])
-    .then(([headerHTML, footerHTML]) => {
+  async function injectHeaderFooter() {
+    try {
+      const [headerHTML, footerHTML] = await Promise.all([
+        fetch(withBase('components/header.html'), { cache: 'no-store' }).then(r => r.ok ? r.text() : Promise.reject(r)),
+        fetch(withBase('components/footer.html'), { cache: 'no-store' }).then(r => r.ok ? r.text() : Promise.reject(r)),
+      ]);
+
       document.body.insertAdjacentHTML('afterbegin', headerHTML);
       document.body.insertAdjacentHTML('beforeend', footerHTML);
 
-      // Normalize header nav links to include BASE
+      // Normalize nav links to include BASE (so they work from any subdirectory).
       document.querySelectorAll('header nav a[href]').forEach(a => {
-        const clean = a.getAttribute('href').replace(/^\//, '');
+        const clean = (a.getAttribute('href') || '').replace(/^\//, '');
         a.setAttribute('href', withBase(clean));
       });
-    })
-    .catch(err => {
-      console.error('Failed to load header/footer', err);
-    });
+    } catch (err) {
+      console.error('Header/Footer load failed:', err);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', injectHeaderFooter, { once: true });
+  } else {
+    injectHeaderFooter();
+  }
 })();
