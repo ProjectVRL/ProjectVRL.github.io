@@ -213,9 +213,10 @@ footer a:hover {
 }
 
 /* ===== Groups / Bracket ===== */
+/* AFTER */
 .groups-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
   gap: 1.25rem;
 }
 
