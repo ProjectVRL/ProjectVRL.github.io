@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clips — Project V RL</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" href="logos/favicon.png" />
+  <link rel="prefetch" href="components/header.html" />
+  <link rel="prefetch" href="components/footer.html" />
+</head>
+<body>
+  <main class="content-grid single">
+    <section class="card">
+      <h2>Clips</h2>
+      <div id="clips-grid" class="video-grid">
+        <p>Loading clips…</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/main.js" defer></script>
+  <script>
+    (function () {
+      const GRID = document.getElementById('clips-grid');
+
+      // Accepts full YouTube URLs (youtu.be or youtube.com) and returns the video id
+      function toId(u) {
+        try {
+          const url = new URL(u);
+          if (url.hostname.includes('youtu.be')) return url.pathname.slice(1);
+          if (url.hostname.includes('youtube.com')) {
+            if (url.searchParams.get('v')) return url.searchParams.get('v');
+            const m = url.pathname.match(/\/embed\/([a-zA-Z0-9_-]{6,})/);
+            if (m) return m[1];
+          }
+        } catch {}
+        // fallback: last path segment
+        return (u || '').split('/').pop().split('?')[0];
+      }
+
+      fetch('data/clips.json', { cache: 'no-store' })
+        .then(r => r.json())
+        .then(({ clips }) => {
+          GRID.innerHTML = '';
+          clips.forEach(c => {
+            const id = toId(c.url);
+            const card = document.createElement('article');
+            card.className = 'video-item';
+            card.innerHTML = `
+              <div class="video-frame">
+                <iframe
+                  loading="lazy"
+                  title="${(c.title||'Clip').replace(/"/g,'&quot;')}"
+                  src="https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerpolicy="origin-when-cross-origin"
+                  allowfullscreen></iframe>
+              </div>
+              <div class="video-meta">
+                <strong>${c.title || 'Untitled Clip'}</strong>
+                ${c.published ? `<div class="video-date">${c.published}</div>` : ''}
+              </div>
+            `;
+            GRID.appendChild(card);
+          });
+          if (!clips || !clips.length) GRID.innerHTML = '<p>No clips yet.</p>';
+        })
+        .catch(() => GRID.innerHTML = '<p>Failed to load clips.</p>');
+    })();
+  </script>
+</body>
+</html>
