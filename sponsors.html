@@ -117,5 +117,27 @@
 
   <!-- footer injected by main.js -->
   <script src="js/main.js" defer></script>
+
+    <script>
+  (function(){
+    const track = document.querySelector('.logo-track');
+    if (!track) return;
+
+    // Ensure there are at least 2 copies of the sequence so the -50% loop is seamless
+    const children = Array.from(track.children).map(n => n.cloneNode(true));
+    track.append(...children); // now we have two sequences
+
+    // If the reel is still shorter than the container, clone again until it is long enough
+    const ensureLongEnough = () => {
+      const reel = track.parentElement;
+      while (track.scrollWidth < reel.clientWidth * 2) {
+        track.append(...Array.from(track.children).map(n => n.cloneNode(true)));
+      }
+    };
+    ensureLongEnough();
+    window.addEventListener('resize', ensureLongEnough);
+  })();
+  </script>
+
 </body>
 </html>
