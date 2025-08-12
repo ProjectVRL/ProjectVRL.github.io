@@ -3,39 +3,116 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Schedule - Project V RL</title>
-  <link rel="stylesheet" href="/css/style.css" />
-  <link rel="icon" type="image/png" href="/logos/favicon.png" />
+  <title>Groups - Project V RL</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="icon" type="image/png" href="../logos/favicon.png" />
 </head>
 <body>
-  <!-- header loaded by JS -->
+  <!-- header injected by main.js -->
+
   <main class="content-grid">
-    <section class="card">
-      <h2>Match Schedule</h2>
-      <div id="schedule-container">
-        <p>Loading schedule...</p>
+    <section class="card" style="width:100%;max-width:1200px;">
+      <h2 style="text-align:center;margin-bottom:1rem;">Neo Egoist League — Group Stage</h2>
+
+      <!-- 2×2 grid of group tables -->
+      <div class="groups-grid" id="groups-root">
+        <!-- JS will render 4 group cards here -->
+        <p>Loading groups…</p>
       </div>
     </section>
   </main>
 
-  <!-- footer loaded by JS -->
-  <script src="/js/main.js"></script>
+  <!-- footer injected by main.js -->
+  <script src="../js/main.js" defer></script>
   <script>
-    // Example inline JS to show placeholder logic (ideally move to main.js)
-    fetch('/data/schedule.json')
-      .then(res => res.json())
-      .then(data => {
-        const container = document.getElementById('schedule-container');
-        container.innerHTML = '';
-        data.forEach(match => {
-          const div = document.createElement('div');
-          div.innerHTML = `<strong>${match.date}</strong>: ${match.team1} vs ${match.team2}`;
-          container.appendChild(div);
+    // Render groups from JSON: ../data/groups.json
+    (function () {
+      const DATA_URL = '../data/groups.json';
+      const root = document.getElementById('groups-root');
+
+      const createCell = (tag, html) => {
+        const el = document.createElement(tag);
+        if (html !== undefined) el.innerHTML = html;
+        return el;
+      };
+
+      fetch(DATA_URL)
+        .then(r => r.json())
+        .then(({ groups }) => {
+          root.innerHTML = '';
+          groups.forEach(g => {
+            // Card
+            const card = document.createElement('div');
+            card.className = 'group-card';
+            card.style.setProperty('--accent', g.color || '#6b1ed9');
+
+            // Title bar
+            const title = document.createElement('div');
+            title.className = 'group-title';
+            title.textContent = g.title;
+            card.appendChild(title);
+
+            // Table
+            const table = document.createElement('table');
+            table.className = 'group-table';
+            const thead = document.createElement('thead');
+            thead.innerHTML = `
+              <tr>
+                <th>Position</th>
+                <th>Team&nbsp;Crest</th>
+                <th>Team</th>
+                <th>PTS</th>
+                <th>Wins</th>
+                <th>Losses</th>
+                <th>Games</th>
+                <th>G. Diff</th>
+              </tr>
+            `;
+            table.appendChild(thead);
+
+            const tbody = document.createElement('tbody');
+            g.teams.forEach((t, i) => {
+              const tr = document.createElement('tr');
+
+              // Position
+              tr.appendChild(createCell('td', (t.position ?? (i + 1)).toString()));
+
+              // Crest
+              const crestTd = document.createElement('td');
+              const img = document.createElement('img');
+              img.src = `../logos/${t.logo}`;
+              img.alt = `${t.name} crest`;
+              img.width = 28;
+              img.height = 28;
+              img.loading = 'lazy';
+              img.decoding = 'async';
+              crestTd.appendChild(img);
+              tr.appendChild(crestTd);
+
+              // Team name (colored if provided)
+              const nameTd = document.createElement('td');
+              if (t.color) nameTd.style.background = t.color;
+              nameTd.innerHTML = `<strong>${t.name}</strong>`;
+              tr.appendChild(nameTd);
+
+              // Stats (placeholders if not provided)
+              ['pts','wins','losses','games','gd'].forEach(k => {
+                tr.appendChild(createCell('td', (t[k] ?? '—')));
+              });
+
+              tbody.appendChild(tr);
+            });
+
+            table.appendChild(tbody);
+            card.appendChild(table);
+            root.appendChild(card);
+          });
+        })
+        .catch(err => {
+          console.error(err);
+          root.innerHTML = '<p>Failed to load groups.</p>';
         });
-      })
-      .catch(() => {
-        document.getElementById('schedule-container').innerHTML = 'Failed to load schedule.';
-      });
+    })();
   </script>
 </body>
 </html>

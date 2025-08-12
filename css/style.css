@@ -212,3 +212,53 @@ footer a:hover {
   height: auto;
 }
 
+/* ===== Groups / Bracket ===== */
+.groups-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 1.25rem;
+}
+
+.group-card {
+  border: 2px solid var(--accent, #6b1ed9);
+  border-radius: 10px;
+  background-color: #1e1e1e;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+.group-title {
+  background: var(--accent, #6b1ed9);
+  color: #fff;
+  font-weight: 700;
+  padding: 0.6rem 0.9rem;
+  text-align: center;
+}
+
+.group-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.group-table th,
+.group-table td {
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid #2d2d2d;
+  text-align: center;
+}
+
+.group-table th:nth-child(3),
+.group-table td:nth-child(3) { /* Team name column */
+  text-align: left;
+}
+
+.group-table tbody tr:hover {
+  background: #242424;
+}
+
+.group-table img {
+  display: block;
+  margin: 0 auto;
+  image-rendering: -webkit-optimize-contrast;
+}
