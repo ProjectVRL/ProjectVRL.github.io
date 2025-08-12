@@ -33,6 +33,12 @@
         const clean = (a.getAttribute('href') || '').replace(/^\//, '');
         a.setAttribute('href', withBase(clean));
       });
+
+      // Resolve header logo paths from data-src using BASE (works on subpages).
+      document.querySelectorAll('header img[data-src]').forEach(img => {
+        const clean = (img.getAttribute('data-src') || '').replace(/^\//, '');
+        img.src = withBase(clean);
+      });
     } catch (err) {
       console.error('Header/Footer load failed:', err);
     }
