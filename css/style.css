@@ -267,3 +267,13 @@ footer a:hover { text-decoration: underline; }
 .btn:active { transform: translateY(-1px); }
 .btn-secondary { background: #2a2a2a; color: #fff; border-color: rgba(255,255,255,0.08); }
 .btn-secondary:hover { filter: brightness(1.15); }
+/* Make links inside page content white */
+.content-grid a,
+.content-grid a:visited {
+  color: #fff; /* or var(--white) */
+}
+.content-grid a:hover,
+.content-grid a:focus {
+  color: #fff;
+  text-decoration: underline;
+}
