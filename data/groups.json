@@ -4,40 +4,40 @@
       "title": "Neo Egoist League Group A",
       "color": "#2c5aa0",
       "teams": [
-        { "name": "Kawasaki Frontale",   "logo": "kawasaki_frontale.png","color": "#6a69ff"  },
-        { "name": "Manshine United",     "logo": "manshine_united.png",  "color": "#7b1113" },
-        { "name": "Bastard Munchen",     "logo": "bastard_munchen.png",  "color": "#b40a0a" },
-        { "name": "FC Barcha",           "logo": "fc_barcha.png",        "color": "#2f5fb7" }
+        { "id": "kawasaki_frontale", "name": "Kawasaki Frontale", "logo": "kawasaki_frontale.png", "color": "#6a7cff" },
+        { "id": "manshine_united",   "name": "Manshine United",   "logo": "manshine_united.png",   "color": "#7b1113" },
+        { "id": "bastard_munchen",   "name": "Bastard Munchen",   "logo": "bastard_munchen.png",   "color": "#b40a0a" },
+        { "id": "fc_barcha",         "name": "FC Barcha",         "logo": "fc_barcha.png",         "color": "#2f5fb7" }
       ]
     },
-  {
-    "title": "Neo Egoist League Group B",
-    "color": "#00c41f",
-    "teams": [
-      { "id": "ajajax",        "name": "Ajajax",        "logo": "ajajax.png",        "color": "#c56f6f" },
-      { "id": "inter_miranoia","name": "Inter Miranoia","logo": "inter_malicia.png" },
-      { "id": "rpb",           "name": "RPB",           "logo": "rpb.png",           "color": "#ff0000" },
-      { "id": "brightneo",     "name": "BrightNeo",     "logo": "brightneo.png",     "color": "#001dff" }
-    ]
-  },
+    {
+      "title": "Neo Egoist League Group B",
+      "color": "#00c41f",
+      "teams": [
+        { "id": "ajajax",            "name": "Ajajax",            "logo": "ajajax.png",            "color": "#c56f6f" },
+        { "id": "inter_miranoia",    "name": "Inter Miranoia",    "logo": "inter_malicia.png" },
+        { "id": "rpb",               "name": "RPB",               "logo": "rpb.png",               "color": "#ff0000" },
+        { "id": "brightneo",         "name": "BrightNeo",         "logo": "brightneo.png",         "color": "#001dff" }
+      ]
+    },
     {
       "title": "Neo Egoist League Group C",
       "color": "#7f00d6",
       "teams": [
-        { "name": "Royal Madrid",        "logo": "royal_madrid.png",     "color": "#6a69ff" },
-        { "name": "Manshine City",       "logo": "manshine_city.png",    "color": "#36c0df" },
-        { "name": "Ubers",               "logo": "ubers_fc.png",         "color": "#555" },
-        { "name": "Beserk Dortmund",     "logo": "beserk_dortmund.png",  "color": "#ffeb3b" }
+        { "id": "royal_madrid",      "name": "Royal Madrid",      "logo": "royal_madrid.png",      "color": "#6a69ff" },
+        { "id": "manshine_city",     "name": "Manshine City",     "logo": "manshine_city.png",     "color": "#36c0df" },
+        { "id": "ubers",             "name": "Ubers",             "logo": "ubers_fc.png",          "color": "#555" },
+        { "id": "beserk_dortmund",   "name": "Beserk Dortmund",   "logo": "beserk_dortmund.png",   "color": "#ffeb3b" }
       ]
     },
     {
       "title": "Neo Egoist League Group D",
       "color": "#b64d4d",
       "teams": [
-        { "name": "Arsenali",            "logo": "ars_fc.png",           "color": "#8b0000" },
-        { "name": "AC Miranoia",         "logo": "ac_malicia.png",       "color": "#ad6b5b" },
-        { "name": "Paris X Gen",         "logo": "paris_x_gen.png",      "color": "#063b8a" },
-        { "name": "Marseille",           "logo": "marseille_fc.png",     "color": "#66c5ff" }
+        { "id": "arsenali",          "name": "Arsenali",          "logo": "ars_fc.png",            "color": "#8b0000" },
+        { "id": "ac_miranoia",       "name": "AC Miranoia",       "logo": "ac_malicia.png",        "color": "#ad6b5b" },
+        { "id": "paris_x_gen",       "name": "Paris X Gen",       "logo": "paris_x_gen.png",       "color": "#063b8a" },
+        { "id": "marseille",         "name": "Marseille",         "logo": "marseille_fc.png",      "color": "#66c5ff" }
       ]
     }
   ]
