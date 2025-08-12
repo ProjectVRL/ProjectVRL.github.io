@@ -4,7 +4,7 @@
       "title": "Neo Egoist League Group A",
       "color": "#2c5aa0",
       "teams": [
-        { "name": "Kawasaki Frontale",   "logo": "kawasaki_frontale.png" },
+        { "name": "Kawasaki Frontale",   "logo": "kawasaki_frontale.png","color": "#6a69ff"  },
         { "name": "Manshine United",     "logo": "manshine_united.png",  "color": "#7b1113" },
         { "name": "Bastard Munchen",     "logo": "bastard_munchen.png",  "color": "#b40a0a" },
         { "name": "FC Barcha",           "logo": "fc_barcha.png",        "color": "#2f5fb7" }
@@ -15,7 +15,7 @@
       "color": "#00c41f",
       "teams": [
         { "name": "Ajajax",              "logo": "ajajax.png",           "color": "#c56f6f" },
-        { "name": "Inter Malicia",       "logo": "inter_malicia.png" },
+        { "name": "AC Miranoia",       "logo": "inter_malicia.png" },
         { "name": "RPB",                 "logo": "rpb.png" },
         { "name": "FC Portimon",         "logo": "fc_portimon.png" }
       ]
