@@ -10,107 +10,138 @@
 <body>
   <!-- header injected by main.js -->
 
- <main class="content-grid single">
-    <section class="card"></section>
+  <main class="content-grid single">
+    <section class="card">
       <h2 style="text-align:center;margin-bottom:1rem;">Neo Egoist League — Group Stage</h2>
 
-      <!-- 2×2 grid of group tables -->
       <div class="groups-grid" id="groups-root">
-        <!-- JS will render 4 group cards here -->
         <p>Loading groups…</p>
       </div>
+
+      <div id="upcoming" style="margin-top:1rem;"></div>
     </section>
   </main>
 
   <!-- footer injected by main.js -->
   <script src="../js/main.js" defer></script>
   <script>
-    // Render groups from JSON: ../data/groups.json
     (function () {
-      const DATA_URL = '../data/groups.json';
+      const GROUPS_URL  = '../data/groups.json';
+      const MATCHES_URL = '../data/matches.json';
+
       const root = document.getElementById('groups-root');
+      const upcomingDiv = document.getElementById('upcoming');
 
-      const createCell = (tag, html) => {
-        const el = document.createElement(tag);
-        if (html !== undefined) el.innerHTML = html;
-        return el;
-      };
+      const fetchJSON = (url) => fetch(url, { cache: 'no-store' }).then(r => r.json());
 
-      fetch(DATA_URL)
-        .then(r => r.json())
-        .then(({ groups }) => {
-          root.innerHTML = '';
-          groups.forEach(g => {
-            // Card
-            const card = document.createElement('div');
-            card.className = 'group-card';
-            card.style.setProperty('--accent', g.color || '#6b1ed9');
+      function emptyStats(t) {
+        return { id:t.id, name:t.name, logo:t.logo, color:t.color,
+          pts:0, wins:0, losses:0, draws:0, games:0, gf:0, ga:0, gd:0 };
+      }
 
-            // Title bar
-            const title = document.createElement('div');
-            title.className = 'group-title';
-            title.textContent = g.title;
-            card.appendChild(title);
+      function applyResult(map, homeId, awayId, hs, as) {
+        const H = map.get(homeId), A = map.get(awayId);
+        if (!H || !A) return; // id mismatch guard
+        H.games++; A.games++;
+        H.gf += hs; H.ga += as; A.gf += as; A.ga += hs;
+        H.gd = H.gf - H.ga; A.gd = A.gf - A.ga;
+        if (hs > as) { H.wins++; H.pts += 3; A.losses++; }
+        else if (hs < as) { A.wins++; A.pts += 3; H.losses++; }
+        else { H.draws++; A.draws++; H.pts++; A.pts++; }
+      }
 
-            // Table
-            const table = document.createElement('table');
-            table.className = 'group-table';
-            const thead = document.createElement('thead');
-            thead.innerHTML = `
-              <tr>
-                <th>Position</th>
-                <th>Team&nbsp;Crest</th>
-                <th>Team</th>
-                <th>PTS</th>
-                <th>Wins</th>
-                <th>Losses</th>
-                <th>Games</th>
-                <th>G. Diff</th>
-              </tr>
-            `;
-            table.appendChild(thead);
+      function sortStandings(arr) {
+        // Pts desc → GD → GF → Name
+        return arr.sort((a,b) =>
+          b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || a.name.localeCompare(b.name)
+        );
+      }
 
-            const tbody = document.createElement('tbody');
-            g.teams.forEach((t, i) => {
-              const tr = document.createElement('tr');
+      function groupLetter(title) {
+        const m = /Group\s+([A-D])/i.exec(title);
+        return m ? m[1].toUpperCase() : null;
+      }
 
-              // Position
-              tr.appendChild(createCell('td', (t.position ?? (i + 1)).toString()));
+      function render(groups, matches) {
+        root.innerHTML = '';
+        upcomingDiv.innerHTML = '';
 
-              // Crest
-              const crestTd = document.createElement('td');
-              const img = document.createElement('img');
-              img.src = `../logos/${t.logo}`;
-              img.alt = `${t.name} crest`;
-              img.width = 28;
-              img.height = 28;
-              img.loading = 'lazy';
-              img.decoding = 'async';
-              crestTd.appendChild(img);
-              tr.appendChild(crestTd);
+        const byGroup = matches.reduce((m, x) => {
+          (m[x.group] ||= []).push(x);
+          return m;
+        }, {});
 
-              // Team name (colored if provided)
-              const nameTd = document.createElement('td');
-              if (t.color) nameTd.style.background = t.color;
-              nameTd.innerHTML = `<strong>${t.name}</strong>`;
-              tr.appendChild(nameTd);
-
-              // Stats (placeholders if not provided)
-              ['pts','wins','losses','games','gd'].forEach(k => {
-                tr.appendChild(createCell('td', (t[k] ?? '—')));
-              });
-
-              tbody.appendChild(tr);
-            });
-
-            table.appendChild(tbody);
-            card.appendChild(table);
-            root.appendChild(card);
+        groups.forEach(g => {
+          const map = new Map(g.teams.map(t => [t.id, emptyStats(t)]));
+          const key = groupLetter(g.title);
+          (byGroup[key] || []).forEach(m => {
+            if (Number.isFinite(m.homeScore) && Number.isFinite(m.awayScore)) {
+              applyResult(map, m.home, m.away, m.homeScore, m.awayScore);
+            }
           });
-        })
-        .catch(err => {
-          console.error(err);
-          root.innerHTML = '<p>Failed to load groups.</p>';
+
+          const tableData = sortStandings([...map.values()]);
+
+          // Build card
+          const card = document.createElement('div');
+          card.className = 'group-card';
+          card.style.setProperty('--accent', g.color || 'var(--brand)');
+
+          const title = document.createElement('div');
+          title.className = 'group-title';
+          title.textContent = g.title;
+          card.appendChild(title);
+
+          const table = document.createElement('table');
+          table.className = 'group-table';
+          table.innerHTML = `
+            <thead>
+              <tr>
+                <th>Position</th><th>Team Crest</th><th>Team</th>
+                <th>PTS</th><th>Wins</th><th>Losses</th><th>Games</th><th>G. Diff</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          `;
+          const tbody = table.querySelector('tbody');
+
+          tableData.forEach((t, idx) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${idx + 1}</td>
+              <td><img src="../logos/${t.logo}" alt="${t.name} crest" width="28" height="28" loading="lazy" decoding="async"></td>
+              <td style="${t.color ? `background:${t.color};` : ''}"><strong>${t.name}</strong></td>
+              <td>${t.pts}</td><td>${t.wins}</td><td>${t.losses}</td><td>${t.games}</td><td>${t.gd}</td>
+            `;
+            tbody.appendChild(tr);
+          });
+
+          card.appendChild(table);
+          root.appendChild(card);
+        });
+
+        // Optional: upcoming list
+        const upcoming = matches.filter(m => m.homeScore == null || m.awayScore == null);
+        if (upcoming.length) {
+          const ul = document.createElement('ul');
+          ul.style.listStyle = 'none';
+          ul.style.paddingLeft = '0';
+          ul.innerHTML = `<h3 style="margin-top:1rem;">Upcoming Matches</h3>`;
+          upcoming.forEach(m => {
+            const li = document.createElement('li');
+            li.style.opacity = '0.85';
+            li.textContent = `Group ${m.group}: ${m.home} vs ${m.away} — ${m.date || 'TBD'}`;
+            ul.appendChild(li);
+          });
+          upcomingDiv.appendChild(ul);
+        }
+      }
+
+      Promise.all([fetchJSON(GROUPS_URL), fetchJSON(MATCHES_URL)])
+        .then(([g, m]) => render(g.groups, (m && m.matches) || []))
+        .catch(e => {
+          console.error(e);
+          root.innerHTML = '<p>Failed to load data.</p>';
         });
     })();
   </script>
