@@ -15,9 +15,9 @@
       "color": "#00c41f",
       "teams": [
         { "name": "Ajajax",              "logo": "ajajax.png",           "color": "#c56f6f" },
-        { "name": "AC Miranoia",       "logo": "inter_malicia.png" },
-        { "name": "RPB",                 "logo": "rpb.png" },
-        { "name": "FC Portimon",         "logo": "fc_portimon.png" }
+        { "name": "Inter Miranoia",       "logo": "inter_malicia.png",   "color": "#c56f6f" },
+        { "name": "RPB",                 "logo": "rpb.png",              "color": "#FF0000" },
+        { "name": "BrightNeo",         "logo": "fc_portimon.png",        "color": "#0000FF"}
       ]
     },
     {
