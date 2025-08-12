@@ -3,25 +3,95 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sponsors - Project V RL</title>
-  <link rel="stylesheet" href="/css/style.css" />
-  <link rel="icon" type="image/png" href="/logos/favicon.png" />
+  <title>Sponsors — Project V RL</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" type="image/png" href="logos/favicon.png" />
+  <link rel="prefetch" href="components/header.html" />
+  <link rel="prefetch" href="components/footer.html" />
 </head>
 <body>
-  <!-- header loaded by JS -->
-  <main class="content-grid">
-    <section class="card">
-      <h2>Our Sponsors</h2>
-      <p>We're incredibly grateful for the sponsors that support Project V RL. Their contributions help us run events, host streams, and grow the community.</p>
+  <!-- header injected by main.js -->
+  <main class="content-grid single">
+    <!-- HERO -->
+    <section class="card sponsor-hero">
+      <h1>Our Sponsors & Partners</h1>
+      <p>We team up with communities and brands that grow Rocket League and elevate our players.</p>
     </section>
 
+    <!-- LOGO REEL -->
     <section class="card">
+      <h2>Partner Network</h2>
+      <div class="logo-reel" aria-label="Partner logos">
+        <div class="logo-track">
+          <!-- Put your real logos in /logos/partners/ (48–64px tall) -->
+          <img src="logos/partners/solace_path.png" alt="Solace Path" loading="lazy" decoding="async" width="160" height="48">
+          <img src="logos/partners/8bit.png"        alt="8Bit"         loading="lazy" decoding="async" width="120" height="48">
+          <!-- Duplicate the same sequence once to loop smoothly -->
+          <img src="logos/partners/solace_path.png" alt="Solace Path" loading="lazy" decoding="async" width="160" height="48">
+          <img src="logos/partners/8bit.png"        alt="8Bit"         loading="lazy" decoding="async" width="120" height="48">
+        </div>
+      </div>
+      <p class="logo-reel-note">Want your logo here? See sponsorship tiers below.</p>
+    </section>
+
+    <!-- TIERS -->
+    <section class="card">
+      <h2>Sponsorship Tiers</h2>
+      <div class="tiers-grid">
+        <article class="tier">
+          <div class="tier-badge bronze">Bronze</div>
+          <ul class="tier-list">
+            <li>Logo on site (logo reel)</li>
+            <li>Social shoutouts</li>
+            <li>Partner role in Discord</li>
+          </ul>
+        </article>
+
+        <article class="tier">
+          <div class="tier-badge silver">Silver</div>
+          <ul class="tier-list">
+            <li>All Bronze perks</li>
+            <li>On-stream mention each match day</li>
+            <li>Giveaway or mini-event slot</li>
+          </ul>
+        </article>
+
+        <article class="tier">
+          <div class="tier-badge gold">Gold</div>
+          <ul class="tier-list">
+            <li>All Silver perks</li>
+            <li>Logo on overlays + VOD descriptions</li>
+            <li>Spotlight feature on homepage</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- PARTNER SPOTLIGHT -->
+    <section class="card spotlight">
+      <h2>Partner Spotlight</h2>
+      <p>
+        <strong>Solace Path</strong> — a community-first organization aligned with our “better together” mission.
+        Active voice channels, league play, and regular community nights make it a great home for teams and fans.
+      </p>
+      <p>
+        <a class="btn" href="https://discord.gg/your-solace-invite" target="_blank" rel="noopener noreferrer">Join Solace Path</a>
+        <a class="btn btn-secondary" href="https://discord.gg/GvEBxdFh34" target="_blank" rel="noopener noreferrer">Join 8Bit</a>
+      </p>
+    </section>
+
+    <!-- CTA -->
+    <section class="card sponsor-cta">
       <h2>Become a Sponsor</h2>
-      <p>If you're interested in sponsoring Project V RL, reach out to us via Discord or Twitter. We offer brand placements, shout-outs during matches, and partnership spotlights.</p>
+      <p>We offer brand placements, on-stream shoutouts, community features, and spotlight articles.</p>
+      <div class="cta-actions">
+        <a class="btn" href="http://discord.gg/KTnd44jvjF" target="_blank" rel="noopener noreferrer">Talk on Discord</a>
+        <a class="btn btn-secondary" href="mailto:contact@projectvrl.example">Email Us</a>
+      </div>
     </section>
   </main>
 
-  <!-- footer loaded by JS -->
-  <script src="/js/main.js"></script>
+  <!-- footer injected by main.js -->
+  <script src="js/main.js" defer></script>
 </body>
 </html>
