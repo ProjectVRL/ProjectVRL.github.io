@@ -1,5 +1,17 @@
 {
   "matches": [
-   { "group": "B", "home": "rpb", "away": "brightneo", "homeScore": 2, "awayScore": 3, "date": "2025-08-11" }
+    { "group": "A", "home": "bastard_munchen", "away": "fc_barcha", "homeScore": 3, "awayScore": 2, "date": "2025-08-16" },
+    { "group": "A", "home": "kawasaki_frontale", "away": "manshine_united", "homeScore": 3, "awayScore": 1, "date": "2025-08-16" },
+
+    { "group": "B", "home": "rpb", "away": "brightneo", "homeScore": 2, "awayScore": 3, "date": "2025-08-11" },
+    { "group": "B", "home": "ajajax", "away": "inter_miranoia", "homeScore": 0, "awayScore": 3, "date": "2025-08-16" },
+
+    { "group": "C", "home": "beserk_dortmund", "away": "ubers", "homeScore": 1, "awayScore": 3, "date": "2025-08-16" },
+    { "group": "C", "home": "manshine_city", "away": "royal_madrid", "homeScore": 2, "awayScore": 3, "date": "2025-08-16" },
+    
+    { "group": "D", "home": "ac_miranoia", "away": "arsenali", "homeScore": 3, "awayScore": 1, "date": "2025-08-16" },
+    { "group": "D", "home": "paris_x_gen", "away": "marseille", "homeScore": 3, "awayScore": 2, "date": "2025-08-16" }
+   
+
   ]
 }
