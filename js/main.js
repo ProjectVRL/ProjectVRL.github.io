@@ -1,6 +1,6 @@
 // js/main.js
 (() => {
-  // ---------- BASE path detection (works from root or subfolders) ----------
+  // ---------- BASE path detection ----------
   const script =
     document.currentScript ||
     Array.from(document.scripts).find(s => s.src && /\/js\/main\.js(\?|$)/.test(s.src));
@@ -11,9 +11,7 @@
       const u = new URL(script.src, location.origin);
       BASE = u.pathname.replace(/js\/main\.js(?:\?.*)?$/, '');
       if (!BASE.endsWith('/')) BASE += '/';
-    } catch {
-      BASE = '/';
-    }
+    } catch { BASE = '/'; }
   }
   const withBase = (p = '') => BASE + p.replace(/^\//, '');
 
@@ -24,80 +22,51 @@
         fetch(withBase('components/header.html'), { cache: 'no-store' }).then(r => r.ok ? r.text() : Promise.reject(r)),
         fetch(withBase('components/footer.html'), { cache: 'no-store' }).then(r => r.ok ? r.text() : Promise.reject(r)),
       ]);
-
       document.body.insertAdjacentHTML('afterbegin', headerHTML);
       document.body.insertAdjacentHTML('beforeend', footerHTML);
 
-      // Normalize nav links to include BASE (so they work from any subdirectory).
       document.querySelectorAll('header nav a[href]').forEach(a => {
         const clean = (a.getAttribute('href') || '').replace(/^\//, '');
         a.setAttribute('href', withBase(clean));
       });
-
-      // Resolve header logo paths from data-src using BASE (works on subpages).
       document.querySelectorAll('header img[data-src]').forEach(img => {
         const clean = (img.getAttribute('data-src') || '').replace(/^\//, '');
         img.src = withBase(clean);
       });
-    } catch (err) {
-      console.error('Header/Footer load failed:', err);
-    }
+    } catch (err) { console.error('Header/Footer load failed:', err); }
   }
 
   // ---------- Helpers ----------
   const fetchJSON = (url) => fetch(url, { cache: 'no-store' }).then(r => r.json());
-  const by = (keyFn) => (a, b) => keyFn(a) - keyFn(b);
-
-  // ---------- Standings logic (3/1/0 with BO5 loser point) ----------
   function emptyStats(t) {
-    return {
-      id: t.id, name: t.name, logo: t.logo, color: t.color || null,
-      pts: 0, wins: 0, losses: 0, games: 0, gf: 0, ga: 0, gd: 0
-    };
+    return { id:t.id, name:t.name, logo:t.logo, color:t.color || null,
+      pts:0, wins:0, losses:0, games:0, gf:0, ga:0, gd:0 };
   }
-
-  // 3 for win; 1 if loss in 3–2; otherwise 0.
   function pointsFor(teamGames, oppGames, didWin) {
     if (didWin) return 3;
     const maxG = Math.max(teamGames, oppGames), minG = Math.min(teamGames, oppGames);
     return (maxG === 3 && minG === 2) ? 1 : 0;
   }
-
-  function applySeries(map, homeId, awayId, hs, as) {
-    const H = map.get(homeId), A = map.get(awayId);
-    if (!H || !A) return;                         // guard against id mismatch
-    H.games++; A.games++;
-    H.gf += hs; H.ga += as; A.gf += as; A.ga += hs;
-    H.gd = H.gf - H.ga; A.gd = A.gf - A.ga;
-
-    const hWin = hs > as, aWin = as > hs;
-    if (hWin) { H.wins++; A.losses++; } else if (aWin) { A.wins++; H.losses++; }
-
-    H.pts += pointsFor(hs, as, hWin);
-    A.pts += pointsFor(as, hs, aWin);
+  // Update a SINGLE row (works for cross-group games)
+  function applySeriesTo(row, teamGames, oppGames, didWin) {
+    row.games += 1;
+    row.gf += teamGames; row.ga += oppGames;
+    row.gd = row.gf - row.ga;
+    if (didWin) row.wins++; else row.losses++;
+    row.pts += pointsFor(teamGames, oppGames, didWin);
   }
-
-  function sortStandings(rows) {
-    // PTS desc → GD desc → Wins desc → GF desc → Name asc
-    return rows.sort((x, y) =>
-      y.pts - x.pts ||
-      y.gd - x.gd ||
-      y.wins - x.wins ||
-      y.gf - x.gf ||
-      x.name.localeCompare(y.name)
+  function sortStandings(arr) {
+    // PTS ↓, GD ↓, Wins ↓, GF ↓, Name ↑
+    return arr.sort((a,b)=>
+      b.pts-a.pts || b.gd-a.gd || b.wins-a.wins || b.gf-a.gf || a.name.localeCompare(b.name)
     );
   }
+  const groupLetter = (title) => (title?.match(/Group\s+([A-Z])/i)||[])[1]?.toUpperCase() || null;
 
-  const groupLetter = (title) => {
-    const m = /Group\s+([A-Z])/i.exec(title || '');
-    return m ? m[1].toUpperCase() : null;
-  };
-
-  // ---------- Schedule page renderer ----------
+  // ---------- Schedule page renderer (counts cross-group) ----------
   async function bootSchedulePage() {
     const root = document.getElementById('groups-root');
-    if (!root) return; // Not the schedule page
-
+    if (!root) return;
     const upcomingDiv = document.getElementById('upcoming');
 
     try {
@@ -105,30 +74,42 @@
         fetchJSON(withBase('data/groups.json')),
         fetchJSON(withBase('data/matches.json')),
       ]);
-      const groups = gData?.groups || [];
+      const groups  = gData?.groups  || [];
       const matches = mData?.matches || [];
 
       root.innerHTML = '';
-      upcomingDiv && (upcomingDiv.innerHTML = '');
+      if (upcomingDiv) upcomingDiv.innerHTML = '';
 
-      // Index matches by group letter
-      const matchesByGroup = matches.reduce((acc, m) => {
-        (acc[m.group] ||= []).push(m);
-        return acc;
-      }, {});
-
-      // Render each group card
+      // Fast lookup: id -> group letter for membership checks (optional)
+      const idToGroup = new Map();
       groups.forEach(g => {
-        const letter = groupLetter(g.title);
+        const L = groupLetter(g.title) || '?';
+        g.teams.forEach(t => idToGroup.set(t.id, L));
+      });
+
+      // Render each group using ALL scored matches that involve its teams
+      groups.forEach(g => {
         const map = new Map(g.teams.map(t => [t.id, emptyStats(t)]));
-        (matchesByGroup[letter] || []).forEach(m => {
-          if (Number.isFinite(m.homeScore) && Number.isFinite(m.awayScore)) {
-            applySeries(map, m.home, m.away, m.homeScore, m.awayScore);
-          }
+        const teamSet = new Set(g.teams.map(t => t.id));
+
+        matches.forEach(m => {
+          const done = Number.isFinite(m.homeScore) && Number.isFinite(m.awayScore);
+          if (!done) return;
+
+          const hIn = teamSet.has(m.home);
+          const aIn = teamSet.has(m.away);
+          if (!hIn && !aIn) return; // not relevant to this group's table
+
+          const hWin = m.homeScore > m.awayScore;
+          const aWin = m.awayScore > m.homeScore;
+
+          if (hIn) applySeriesTo(map.get(m.home), m.homeScore, m.awayScore, hWin);
+          if (aIn) applySeriesTo(map.get(m.away), m.awayScore, m.homeScore, aWin);
         });
 
         const tableData = sortStandings([...map.values()]);
 
+        // Build card
         const card = document.createElement('div');
         card.className = 'group-card';
         card.style.setProperty('--accent', g.color || 'var(--brand)');
@@ -166,27 +147,21 @@
         root.appendChild(card);
       });
 
-      // Upcoming list (matches missing a score)
+      // Upcoming (any match missing a score)
       const upcoming = matches.filter(m => m.homeScore == null || m.awayScore == null);
       if (upcoming.length && upcomingDiv) {
+        upcoming.sort((a,b)=>{
+          const ad = Date.parse(a.date || ''), bd = Date.parse(b.date || '');
+          return (isNaN(ad)?9e12:ad) - (isNaN(bd)?9e12:bd);
+        });
         const ul = document.createElement('ul');
         ul.style.listStyle = 'none';
         ul.style.paddingLeft = '0';
-        const h3 = document.createElement('h3');
-        h3.style.marginTop = '1rem';
-        h3.textContent = 'Upcoming Matches';
-        ul.appendChild(h3);
-
-        // Sort by date if present
-        upcoming.sort((a, b) => {
-          const ad = Date.parse(a.date || ''), bd = Date.parse(b.date || '');
-          return (isNaN(ad) ? 9e12 : ad) - (isNaN(bd) ? 9e12 : bd);
-        });
-
+        ul.innerHTML = `<h3 style="margin-top:1rem;">Upcoming Matches</h3>`;
         upcoming.forEach(m => {
           const li = document.createElement('li');
           li.style.opacity = '0.85';
-          li.textContent = `Group ${m.group}: ${m.home} vs ${m.away} — ${m.date || 'TBD'}`;
+          li.textContent = `${m.date || 'TBD'} — ${m.home} vs ${m.away} (Group ${m.group || '—'})`;
           ul.appendChild(li);
         });
         upcomingDiv.appendChild(ul);
@@ -198,13 +173,8 @@
   }
 
   // ---------- Boot ----------
-  const start = () => {
-    injectHeaderFooter();
-    bootSchedulePage();
-  };
+  const start = () => { injectHeaderFooter(); bootSchedulePage(); };
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', start, { once: true });
-  } else {
-    start();
-  }
+  } else { start(); }
 })();
