@@ -18,6 +18,9 @@
         <p>Loading groups…</p>
       </div>
 
+      <h2 style="text-align:center;margin:1.5rem 0 .75rem;">Neo Egoist League — Full Standings</h2>
+      <div id="standings-root"><p>Loading standings…</p></div>
+
       <div id="upcoming" style="margin-top:1rem;"></div>
     </section>
   </main>
@@ -56,6 +59,74 @@
           b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || a.name.localeCompare(b.name)
         );
       }
+
+// === NEW: BO5 points + row updater for full-league standings ===
+function pointsForBO5(gFor, gAgainst, didWin) {
+  if (didWin) return 3;
+  const hi = Math.max(gFor, gAgainst), lo = Math.min(gFor, gAgainst);
+  return (hi === 3 && lo === 2) ? 1 : 0;
+}
+function applySeriesRow(row, gFor, gAgainst) {
+  const win = gFor > gAgainst;
+  row.games += 1;
+  row.gf += gFor; row.ga += gAgainst;
+  row.gd = row.gf - row.ga;
+  if (win) row.wins++; else row.losses++;
+  row.pts += pointsForBO5(gFor, gAgainst, win);
+}
+
+  // === NEW: render full standings using ALL scored matches (cross-group) ===
+  function renderFullStandings(groups, matches) {
+    const mount = document.getElementById('standings-root');
+    if (!mount) return;
+
+    // unique team list from groups.json
+    const seen = new Set(), teams = [];
+    groups.forEach(g => g.teams.forEach(t => { if (!seen.has(t.id)) { seen.add(t.id); teams.push(t); } }));
+    const map = new Map(teams.map(t => [t.id, { id:t.id, name:t.name, logo:t.logo, color:t.color,
+      pts:0, wins:0, losses:0, games:0, gf:0, ga:0, gd:0 }]));
+
+    // count every finished series
+    matches.forEach(m => {
+      if (!Number.isFinite(m.homeScore) || !Number.isFinite(m.awayScore)) return;
+      const H = map.get(m.home), A = map.get(m.away);
+      if (!H || !A) return;                 // guard unknown slugs
+      applySeriesRow(H, m.homeScore, m.awayScore);
+      applySeriesRow(A, m.awayScore, m.homeScore);
+    });
+
+    const rows = [...map.values()].sort((a,b) =>
+      b.pts - a.pts || b.gd - a.gd || b.wins - a.wins || b.gf - a.gf || a.name.localeCompare(b.name)
+    );
+
+    // build table (reuses .group-table styles)
+    mount.innerHTML = '';
+    const table = document.createElement('table');
+    table.className = 'group-table';
+    table.innerHTML = `
+      <thead>
+        <tr>
+          <th>Position</th><th>Team Crest</th><th>Team</th>
+          <th>PTS</th><th>Wins</th><th>Losses</th><th>Games</th><th>G. Diff</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    `;
+    const tbody = table.querySelector('tbody');
+    rows.forEach((t, i) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${i + 1}</td>
+        <td><img src="../logos/${t.logo}" alt="${t.name} crest" width="28" height="28" loading="lazy" decoding="async"></td>
+        <td style="${t.color ? `background:${t.color};` : ''}"><strong>${t.name}</strong></td>
+        <td>${t.pts}</td><td>${t.wins}</td><td>${t.losses}</td><td>${t.games}</td><td>${t.gd}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+    mount.appendChild(table);
+  }
+
+
 
       function groupLetter(title) {
         const m = /Group\s+([A-D])/i.exec(title);
@@ -135,6 +206,11 @@
           });
           upcomingDiv.appendChild(ul);
         }
+
+
+
+        // NEW: full-league standings at the bottom
+        renderFullStandings(groups, matches);
       }
 
       Promise.all([fetchJSON(GROUPS_URL), fetchJSON(MATCHES_URL)])
