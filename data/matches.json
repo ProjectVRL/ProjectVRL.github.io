@@ -21,14 +21,14 @@
     { "group": "D", "home": "marseille", "away": "ubers", "homeScore": 3, "awayScore": 2, "date": "2025-08-23" },
 
 
-    { "group": "B", "home": "ajajax", "away": "rpb", "homeScore": null, "awayScore": null, "date": "2025-08-??" },
-    { "group": "B", "home": "inter_miranoia", "away": "brightneo", "homeScore": null, "awayScore": null, "date": "2025-08-??" },
-    { "group": "A", "home": "fc_barcha", "away": "manshine_united", "homeScore": null, "awayScore": null, "date": "2025-08-??" },
-    { "group": "A", "home": "bastard_munchen", "away": "kawasaki_frontale", "homeScore": null, "awayScore": null, "date": "2025-08-??" },
-    { "group": "C", "home": "manshine_city", "away": "beserk_dortmund", "homeScore": null, "awayScore": null, "date": "2025-08-??" },
-    { "group": "C", "home": "ubers", "away": "royal_madrid", "homeScore": null, "awayScore": null, "date": "2025-08-??" },
-    { "group": "D", "home": "ac_miranoia", "away": "marseille", "homeScore": null, "awayScore": null, "date": "2025-08-??" },
-    { "group": "D", "home": "paris_x_gen", "away": "arsenali", "homeScore": null, "awayScore": null, "date": "2025-08-??" }
+    { "group": "B", "home": "ajajax", "away": "rpb", "homeScore": 0, "awayScore": 3, "date": "2025-08-??" },
+    { "group": "B", "home": "inter_miranoia", "away": "brightneo", "homeScore": 3, "awayScore": 2, "date": "2025-08-??" },
+    { "group": "A", "home": "fc_barcha", "away": "manshine_united", "homeScore": 3, "awayScore": 0, "date": "2025-08-??" },
+    { "group": "A", "home": "bastard_munchen", "away": "kawasaki_frontale", "homeScore": 3, "awayScore": 1, "date": "2025-08-??" },
+    { "group": "C", "home": "manshine_city", "away": "beserk_dortmund", "homeScore": 1, "awayScore": 3, "date": "2025-08-??" },
+    { "group": "C", "home": "ubers", "away": "royal_madrid", "homeScore": 1, "awayScore": 3, "date": "2025-08-??" },
+    { "group": "D", "home": "ac_miranoia", "away": "marseille", "homeScore": 2, "awayScore": 3, "date": "2025-08-??" },
+    { "group": "D", "home": "paris_x_gen", "away": "arsenali", "homeScore": 3, "awayScore": 2, "date": "2025-08-??" }
 
 
   ]
